@@ -45,8 +45,10 @@ app.use("/inbox", inboxRouter);
 
 // 404 not found handler
 app.use(notFoundHandler);
+
 //common error handler
 app.use(errorHandler);
+
 app.listen(process.env.PORT, () => {
   console.log(`App listening port ${process.env.PORT}`);
 });

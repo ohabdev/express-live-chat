@@ -27,6 +27,7 @@ function uploader(
       cb(null, fileName + fileExt);
     },
   });
+
   const upload = multer({
     storage: storage,
     limits: {
@@ -40,6 +41,7 @@ function uploader(
       }
     },
   });
+
   return upload;
 }
 

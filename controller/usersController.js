@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const User = require("../models/People");
 const { unlink } = require("fs");
+const createError = require("http-errors");
 
 async function getUsers(req, res, next) {
   try {
@@ -33,29 +34,18 @@ async function addUser(req, res, next) {
 
   // save user or send error
   try {
-    await newUser.save();
-    res.status(200).json({
-      message: "User was added successfully!",
-    });
+    const result = await newUser.save();
+    res.redirect("/users");
   } catch (err) {
-    console.log(err);
-    // res.status(500).json({
-    //   errors: {
-    //     common: {
-    //       msg: "Unknown error occured!",
-    //     },
-    //   },
-    // });
+    throw createError(err);
   }
 }
 
 async function removeUser(req, res, next) {
   try {
-    console.log(req.params);
     const user = await User.findByIdAndDelete({
       _id: req.params.id,
     });
-    console.log(user);
     if (user.avatar) {
       unlink(
         path.join(__dirname, `/../public/uploads/avatars/${user.avatar}`),

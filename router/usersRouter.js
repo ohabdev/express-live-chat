@@ -9,13 +9,15 @@ const {
   addUser,
   removeUser,
 } = require("../controller/usersController");
+const { checkLogin } = require("../middlewares/common/checkLogin");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", decorateHtmlResponse("Users"), getUsers);
+router.get("/", decorateHtmlResponse("Users"), checkLogin, getUsers);
 
 router.post(
   "/",
+  checkLogin,
   avatarUpload,
   addUserValidators,
   addUserValidationHandler,

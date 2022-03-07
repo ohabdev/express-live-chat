@@ -37,7 +37,7 @@ async function login(req, res, next) {
         //set cookie
         res.cookie(process.env.COOKIE_NAME, token, {
           maxAge: process.env.JWT_EXPIRY,
-          httOnly: true,
+          httpOnly: true,
           signed: true,
         });
 
@@ -51,7 +51,7 @@ async function login(req, res, next) {
       throw createError("Login failed! Please try again");
     }
   } catch (error) {
-    res.render("index", {
+    res.render("inbox", {
       data: {
         username: req.body.username,
       },
@@ -64,7 +64,13 @@ async function login(req, res, next) {
   }
 }
 
+function logout(req, res) {
+  res.clearCookie(process.env.COOKIE_NAME);
+  res.send("logged out");
+}
+
 module.exports = {
   getLogin,
   login,
+  logout,
 };
