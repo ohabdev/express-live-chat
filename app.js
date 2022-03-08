@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const {
   notFoundHandler,
@@ -15,7 +16,7 @@ const inboxRouter = require("./router/inboxRouter");
 
 const app = express();
 dotenv.config();
-
+app.locals.moment = moment;
 // Database connetion mongodb
 mongoose
   .connect(process.env.MONGO_CONNECTION_URL, {
