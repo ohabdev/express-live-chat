@@ -13,7 +13,7 @@ const addUserValidators = [
     .withMessage("Name must not contain anything other than alphabet")
     .trim(),
   check("email")
-    .isEmail({ min: 1 })
+    .isEmail()
     .withMessage("Your email is not valid")
     .trim()
     .custom(async (value) => {
@@ -61,11 +61,10 @@ const addUserValidationHandler = (req, res, next) => {
         }
       );
     }
+    res.status(500).json({
+      errors: mappedErrors,
+    });
   }
-
-  res.status(500).json({
-    errors: mappedErrors,
-  });
 };
 
 module.exports = {

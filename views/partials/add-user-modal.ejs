@@ -64,7 +64,6 @@
     }
 
     const formData = new FormData(form);
-    console.log(formData);
     let response = await fetch("/users", {
       method: "POST",
       body: formData,

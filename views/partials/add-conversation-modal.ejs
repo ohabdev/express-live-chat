@@ -72,6 +72,8 @@
 
     let result = await response.json();
 
+    console.log(result);
+
     if (result.errors) {
       const errorplaceholder = document.querySelector("p.error");
       errorplaceholder.textContent = res.errors.common.msg;

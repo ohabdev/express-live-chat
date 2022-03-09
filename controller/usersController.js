@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const User = require("../models/People");
 const { unlink } = require("fs");
-const createError = require("http-errors");
 
 async function getUsers(req, res, next) {
   try {

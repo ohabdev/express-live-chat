@@ -1,5 +1,5 @@
 const Conversation = require("../models/Conversation");
-const excape = require("../utilities/escape");
+const escape = require("../utilities/escape");
 const Message = require("../models/Message");
 const createError = require("http-errors");
 const User = require("../models/People");
@@ -27,9 +27,9 @@ async function searchUser(req, res, next) {
   const user = req.body.user;
   const searchQuery = user.replace("+88", "");
 
-  const name_search_regex = new RegExp(excape(searchQuery), "i");
-  const mobile_search_regex = new RegExp("^" + excape("+88", searchQuery));
-  const email_search_regex = new RegExp("^" + excape(searchQuery) + "$", "i");
+  const name_search_regex = new RegExp(escape(searchQuery), "i");
+  const mobile_search_regex = new RegExp("^" + escape("+88" + searchQuery));
+  const email_search_regex = new RegExp("^" + escape(searchQuery) + "$", "i");
 
   try {
     if (searchQuery !== "") {
@@ -67,8 +67,6 @@ async function searchUser(req, res, next) {
 // add conversation
 async function addConversation(req, res, next) {
   try {
-    console.log(req.user);
-    console.log(req.body);
     const newConversation = new Conversation({
       creator: {
         id: req.user.userid,
