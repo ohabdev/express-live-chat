@@ -60,7 +60,6 @@
   });
 
   async function searchUsers(){
-    console.log(input.value);
     let response = await fetch("/inbox/search", {
       method: "POST",
       body: JSON.stringify({
@@ -92,17 +91,16 @@
                 </div>
               </div>  
             </li>`;
-            generatedHtml += "</ul>";
-            users_placeholder.innerHTML = generatedHtml;
-            users_placeholder.style.display = "block";
         });
+        generatedHtml += "</ul>";
+        users_placeholder.innerHTML = generatedHtml;
+        users_placeholder.style.display = "block";
       }
     }
   }
 
   // create Conversation
   async function createConversation(participant_id, name, avatar){
-    console.log(participant_id, name, avatar)
     try {
       const response = await fetch("/inbox/conversation", {
         method: "POST",

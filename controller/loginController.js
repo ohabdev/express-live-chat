@@ -43,7 +43,7 @@ async function login(req, res, next) {
 
         //set logged in user local identifier
         res.locals.loggedInUser = userOject;
-        res.render("inbox");
+        res.redirect("inbox");
       } else {
         throw createError("Login failed! Please try again");
       }

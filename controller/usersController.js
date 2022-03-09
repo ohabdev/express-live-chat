@@ -35,9 +35,17 @@ async function addUser(req, res, next) {
   // save user or send error
   try {
     const result = await newUser.save();
-    res.redirect("/users");
+    res.status(200).json({
+      message: "User was added successfully!",
+    });
   } catch (err) {
-    throw createError(err);
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: "Unknown error occured!",
+        },
+      },
+    });
   }
 }
 
