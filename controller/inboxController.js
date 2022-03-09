@@ -15,7 +15,6 @@ async function getInbox(req, res, next) {
       ],
     });
     res.locals.data = conversation;
-    console.log(res.locals.data);
     res.render("inbox");
   } catch (error) {
     console.log(error);
@@ -98,7 +97,6 @@ async function addConversation(req, res, next) {
 // get message of a conversation
 async function getMessages(req, res, next) {
   try {
-    console.log(req.params.conversation_id);
     const messages = await Message.find({
       conversation_id: req.params.conversation_id,
     }).sort("-createdAt");
@@ -106,6 +104,7 @@ async function getMessages(req, res, next) {
     const { participant } = await Conversation.findById(
       req.params.conversation_id
     );
+
     res.status(200).json({
       data: {
         messages: messages,
@@ -135,13 +134,12 @@ async function sendMessage(req, res, next) {
           attachments.push(file.filename);
         });
       }
-
       const newMessage = new Message({
         text: req.body.message,
         attachment: attachments,
         sender: {
-          id: req.user.id,
-          name: req.user.name,
+          id: req.user.userid,
+          name: req.user.username,
           avatar: req.user.avatar || null,
         },
         receiver: {
@@ -153,6 +151,25 @@ async function sendMessage(req, res, next) {
       });
 
       const result = await newMessage.save();
+
+      global.io.emit("new_message", {
+        message: {
+          conversation_id: req.body.conversationId,
+          sender: {
+            id: req.user.userid,
+            name: req.user.username,
+            avatar: req.user.avatar || null,
+          },
+          message: req.body.message,
+          attachment: attachments,
+          date_time: result.date_time,
+        },
+      });
+
+      res.status(200).json({
+        message: "Successfully!",
+        data: result,
+      });
     } catch (error) {
       res.status(500).json({
         errors: {
@@ -163,6 +180,7 @@ async function sendMessage(req, res, next) {
       });
     }
   } else {
+    console.log();
     res.status(500).json({
       errors: {
         common: "message text or attachment is required!",
