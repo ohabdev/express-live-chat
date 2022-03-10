@@ -189,10 +189,34 @@ async function sendMessage(req, res, next) {
   }
 }
 
+async function deleteConversation(req, res, next) {
+  try {
+    await Message.deleteMany({
+      conversation_id: req.params.conversation_id,
+    });
+    await Conversation.findByIdAndDelete(req.params.conversation_id);
+
+    res.status(200).json({
+      data: {
+        messages: "Conversation deleted successfully",
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: error.message,
+        },
+      },
+    });
+  }
+}
+
 module.exports = {
   getInbox,
   searchUser,
   addConversation,
   getMessages,
   sendMessage,
+  deleteConversation,
 };

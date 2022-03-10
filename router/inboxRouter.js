@@ -7,6 +7,7 @@ const {
   addConversation,
   getMessages,
   sendMessage,
+  deleteConversation,
 } = require("../controller/inboxController");
 const express = require("express");
 const router = express.Router();
@@ -18,5 +19,11 @@ router.post("/search", checkLogin, searchUser);
 router.post("/conversation", checkLogin, addConversation);
 router.get("/messages/:conversation_id", checkLogin, getMessages);
 router.post("/message", checkLogin, attachmentUpload, sendMessage);
+router.delete(
+  "/:conversation_id",
+  checkLogin,
+  attachmentUpload,
+  deleteConversation
+);
 
 module.exports = router;
