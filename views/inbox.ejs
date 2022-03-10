@@ -64,7 +64,6 @@
       const chatTitleContainer = document.querySelector("#conversation-partner");
       const loggedinUserId = '<%= loggedInUser.userid %>';
       const loggedinUserName = '<%= loggedInUser.username %>';
-      console.log("======>>",loggedinUserName);
       let participant =  null;
       let current_conversation_id ;
 
@@ -73,7 +72,6 @@
       socket.on("new_message", data=> {
         if (data.message.conversation_id == current_conversation_id) {
           const messageClass = data.message.sender.id === loggedinUserId ? 'you-message' : 'other-message';
-          console.log(data.message);
           const senderAvatar = data.message.sender.avatar ? `<img src="./uploads/avatars/${data.message.sender.avatar}" alt="${data.message.sender.avatar}"/>` : `<img src="./images/nophoto.png" alt="${data.message.sender.avatar}"/>`
 
                 let attachments = '<div class="attachments">';
@@ -100,7 +98,7 @@
                                         </div>
                                       </div>`;
                   }
-                document.querySelector('#chat-message-list > .message-row:first-child').insertAdjacentHTML('beforeBegin', messageHTML);
+                  document.querySelector('#chat-message-list > .message-row:first-child').insertAdjacentHTML('beforeBegin', messageHTML);
               }
       });
 
@@ -112,13 +110,13 @@
         
         let response = await fetch(`/inbox/messages/${conversation_id}`);
         const result = await response.json();
-
         if (!result.errors && result.data) {
           form.style.visibility = "visible";
-
+          
           const  { data, user, conversation_id } = result;
           participant = data.participant;
           current_conversation_id = conversation_id;
+          data.messages.reverse();
 
           if (data.messages) {
             
